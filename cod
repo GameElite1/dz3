@@ -1,0 +1,103 @@
+#include <iostream>
+#include <string>
+#include <math.h>
+#include <vector>
+#include <stdlib.h>
+#include <sstream>
+
+using namespace std;
+
+int main() {
+    std::cout << "Ведите выражение" << endl;
+    std::string zadacha;
+    std::cin >> zadacha;
+    std::vector<std::string> zadacha_preob;
+    std::string vrem;
+    size_t it = 0;
+    while (it < zadacha.size()) {
+        if (zadacha[it] == '*' || zadacha[it] == '/' || zadacha[it] == '+' || zadacha[it] == '-') {
+            zadacha_preob.push_back(vrem);
+            vrem = zadacha[it];
+            zadacha_preob.push_back(vrem);
+            it++;
+            vrem = "";
+        } else {
+            vrem += zadacha[it];
+            it++;
+        }
+        if (it == zadacha.size()) {
+            zadacha_preob.push_back(vrem);
+        }
+    }
+    for (size_t j = 0; j < zadacha_preob.size(); ++j) {
+        if (zadacha_preob[j] == "*") {
+            std::stringstream ss;
+            float chislo1, chislo2, g;
+            ss << zadacha_preob[j + 1];
+            ss >> chislo1;
+            //cout<< chislo1<< endl;
+            std::stringstream aa;
+            aa << zadacha_preob[j - 1];
+            aa >> chislo2;
+            //cout<< chislo2<< endl;
+            g = chislo2 * chislo1;
+
+            //cout<< zadacha_preob[j-1]<< endl<< chislo2*chislo1<< endl;
+            auto iter = zadacha_preob.begin();
+            zadacha_preob.erase(iter + j);
+            zadacha_preob.erase(iter + j);
+            zadacha_preob.erase(iter + j - 1);
+            std::string str;
+            str = to_string(g);
+            auto iter1 = zadacha_preob.cbegin();
+            zadacha_preob.emplace(iter1 + j - 1, str);
+
+        }
+        if (zadacha_preob[j] == "/") {
+            std::stringstream ss;
+            float chislo1, chislo2, g;
+            ss << zadacha_preob[j + 1];
+            ss >> chislo1;
+            std::stringstream aa;
+            aa << zadacha_preob[j - 1];
+            aa >> chislo2;
+            g = chislo2 / chislo1;
+            auto iter = zadacha_preob.begin();
+            zadacha_preob.erase(iter + j);
+            zadacha_preob.erase(iter + j);
+            zadacha_preob.erase(iter + j - 1);
+            std::string str;
+            str = to_string(g);
+            auto iter1 = zadacha_preob.cbegin();
+            zadacha_preob.emplace(iter1 + j - 1, str);
+
+        }
+
+
+    }
+    float rez;
+    std::stringstream ss;
+    ss << zadacha_preob[0];
+    ss >> rez;
+    for (size_t i = 1; i < zadacha_preob.size(); ++i) {
+        //std::cout<< rez<< endl;
+
+        if (zadacha_preob[i] == "-") {
+            std::stringstream ss;
+            float chislo;
+            ss << zadacha_preob[i + 1];
+            ss >> chislo;
+            rez = rez - chislo;
+        }
+        if (zadacha_preob[i] == "+") {
+            std::stringstream ss;
+            float chislo;
+            ss << zadacha_preob[i + 1];
+            ss >> chislo;
+            rez = rez + chislo;
+        }
+        ++i;
+    }
+    std::cout << rez;
+}
+
